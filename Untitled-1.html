@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>あなたのフィンガープリントを見てみよう</title>
+  <script src="https://openfpcdn.io/fingerprintjs/v4"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      line-height: 1.6;
+      background: #f4f4f4;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #333;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h1>あなたのフィンガープリントを見てみよう</h1>
+    <p>あなたのブラウザやデバイスから、これだけの情報が収集されています。</p>
+  </section>
+
+  <section id="fingerprint">
+    <h2>あなたのフィンガープリント情報</h2>
+    <p>取得中...</p>
+  </section>
+
+  <section>
+    <h2>Webフィンガープリントとは？</h2>
+    <p>      Webフィンガープリントとは、あなたのブラウザ・デバイス情報を使って、個人を特定する技術です。/n ブラウザを変えてもipを変えてもプライベートタブに変えても追跡されてしまいます
+  
+
+  </section>
+
+  <section>
+    <h2>危険な理由</h2>
+    <ul>
+      <li>個人を識別できる（匿名ではなくなる）</li>
+      <li>同じIDでウェブ中を追跡される</li>
+      <li>プライバシーの侵害に繋がる</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>どうやって対策するの？</h2>
+    <ul>
+      <li>TorブラウザやFirefoxのプライベートモードを使う</li>
+      <li>指紋ブロッカー拡張を使う（例：Trace、CanvasBlockerなど）</li>
+      <li>JavaScriptやフォントの読み込みを制限する</li>
+      <li>Mullvad browser を使う</li>
+    </ul>
+  </section>
+
+  <section style="text-align: center;">
+    <p>&copy; hiro</p>
+  </section>
+
+  <script>
+    FingerprintJS.load().then(fp => {
+      fp.get().then(result => {
+        const { visitorId, components } = result;
+        const el = document.getElementById('fingerprint');
+        el.innerHTML = `
+          <h2>あなたのフィンガープリント</h2>
+          <p><strong>ID:</strong> ${visitorId}</p>
+          <ul>
+            <li><strong>OS:</strong> ${components.platform.value}</li>
+            <li><strong>画面サイズ:</strong> ${components.screenResolution.value.join(' x ')}</li>
+            <li><strong>ブラウザ:</strong> ${components.userAgent.value}</li>
+            <li><strong>言語設定:</strong> ${components.language.value}</li>
+          </ul>
+          <p style="color: red;">この情報だけで、私達は追跡されています。</p>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
